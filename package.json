@@ -1,7 +1,7 @@
 {
   "name": "rn-wireguard-tunnel",
   "version": "0.1.0",
-  "description": "VJHVKHVKVHK GIGI IGYYIBHIIUGYFFXGFHVH  ",
+  "description": "React Native WireGuard VPN module using the official GoBackend for Android.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {
@@ -16,34 +16,26 @@
     "src",
     "lib",
     "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "react-native.config.js",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
+    "RnWireguardTunnel.podspec",
+    "babel.config.js",
+    "tsconfig.json",
+    "tsconfig.build.json",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "example": "yarn workspace rn-wireguard-tunnel-example",
-    "test": "jest",
-    "typecheck": "tsc",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
-    "release": "release-it --only-version"
+    "build": "bob build",
+    "clean": "rimraf lib android/.gradle android/.cxx",
+    "prepare": "npm run build",
+    "release": "release-it"
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "wireguard",
+    "vpn",
+    "android",
+    "tunnel",
+    "kotlin"
   ],
   "repository": {
     "type": "git",
