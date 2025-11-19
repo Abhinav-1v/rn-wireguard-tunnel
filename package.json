@@ -15,7 +15,7 @@
   "files": [
     "src",
     "lib",
-    "android",
+    "android/src",
     "RnWireguardTunnel.podspec",
     "babel.config.js",
     "tsconfig.json",
