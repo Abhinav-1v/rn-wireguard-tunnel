@@ -1,6 +1,6 @@
 {
   "name": "rn-wireguard-tunnel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native WireGuard VPN module using the official GoBackend for Android.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
