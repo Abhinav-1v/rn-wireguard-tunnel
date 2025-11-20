@@ -90,6 +90,7 @@ jobs:
         env:
           JAVA_OPTS: '-XX:MaxHeapSize=6g'
         run: |
+          chmod +x example/android/gradlew
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
   # 🍎 Build iOS
