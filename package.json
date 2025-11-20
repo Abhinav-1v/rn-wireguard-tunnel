@@ -15,13 +15,14 @@
   "files": [
     "src",
     "lib",
-    "android/src",
-    "RnWireguardTunnel.podspec",
-    "babel.config.js",
-    "tsconfig.json",
-    "tsconfig.build.json",
-    "README.md",
-    "LICENSE"
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "react-native.config.js",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
   ],
   "scripts": {
     "build": "bob build",
