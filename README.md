@@ -5,8 +5,8 @@
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![platform](https://img.shields.io/badge/platform-React%20Native-blue.svg)](https://reactnative.dev/)
 
-A **React Native TurboModule** that lets you build custom VPN apps using **WireGuard** — directly from JavaScript.  
-Implements native Android support via **Kotlin** & the **WireGuard Go backend**.
+A **React Native TurboModule** that lets you build custom VPN apps using **WireGuard**, powered by a **native Kotlin backend** built on the official **WireGuard Go** library.  
+It enables **direct JavaScript control** of VPN initialization, permission handling, key generation, connection, and disconnection — all within React Native.
 
 ---
 
@@ -22,26 +22,25 @@ yarn add rn-wireguard-tunnel
 
 ## ⚙️ Android Setup
 
-Add the following permissions and service entry to your app’s `AndroidManifest.xml`:
+You **do not need to manually add permissions or services** for this library —  
+the package already declares the required permissions and `VpnService` in its manifest.
 
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-<uses-permission android:name="android.permission.BIND_VPN_SERVICE" />
+However, ⚠️ **do not declare another `<service>`** with  
+`android.permission.BIND_VPN_SERVICE` in your app’s own `AndroidManifest.xml`.  
+Having multiple VPN services may cause permission conflicts or runtime errors.
 
-<application>
-  <service
-      android:name="com.rnwireguardtunnel.WireguardVpnService"
-      android:permission="android.permission.BIND_VPN_SERVICE"
-      android:exported="true">
-      <intent-filter>
-          <action android:name="android.net.VpnService" />
-      </intent-filter>
-  </service>
-</application>
-```
+---
 
-> ⚠️ If your app already has a VPN service, ensure only one `<service>` entry exists.
+## 🔄 Recommended Flow
+
+Here’s the proper usage flow to ensure everything initializes correctly:
+
+1. **Generate & store keys securely** (e.g., using `AsyncStorage` or SecureStore)
+2. **Initialize** the WireGuard backend
+3. **Request VPN permission**
+4. **Connect** using your configuration
+5. **Check connection status**
+6. **Disconnect** when done
 
 ---
 
@@ -64,17 +63,21 @@ export default function App() {
 
   const startVpn = async () => {
     try {
+      // 1️⃣ Generate WireGuard keys (store these securely for production)
+      const keys = await generateKeys();
+      console.log('Generated keys:', keys);
+
+      // 2️⃣ Initialize backend
       await initialize();
+
+      // 3️⃣ Request VPN permission
       const granted = await requestVpnPermission();
       if (!granted) {
         alert('VPN permission denied');
         return;
       }
 
-      // Generate keys (for testing/demo)
-      const keys = await generateKeys();
-      console.log('Keys:', keys);
-
+      // 4️⃣ Connect using your VPN config
       await connect({
         clientPrivateKey: keys.privateKey,
         clientAddress: '10.0.0.2/32',
@@ -85,8 +88,9 @@ export default function App() {
         dns: ['1.1.1.1'],
       });
 
+      // 5️⃣ Get connection status
       const current = await getStatus();
-      setStatus(JSON.stringify(current));
+      setStatus(JSON.stringify(current, null, 2));
     } catch (e) {
       console.error('VPN Error:', e);
     }
@@ -95,7 +99,7 @@ export default function App() {
   const stopVpn = async () => {
     await disconnect();
     const current = await getStatus();
-    setStatus(JSON.stringify(current));
+    setStatus(JSON.stringify(current, null, 2));
   };
 
   return (
@@ -124,7 +128,7 @@ const { privateKey, publicKey } = await generateKeys();
 
 ### ⚙️ `initialize()`
 
-Initializes the WireGuard backend.
+Initializes the WireGuard backend. Must be called before connecting.
 
 ```ts
 await initialize();
@@ -134,7 +138,7 @@ await initialize();
 
 ### 🔐 `requestVpnPermission()`
 
-Requests Android VPN permission (must be called before connecting).
+Requests Android VPN permission from the user.
 
 ```ts
 await requestVpnPermission();
@@ -151,7 +155,7 @@ await connect({
   clientPrivateKey: '...',
   clientAddress: '10.0.0.2/32',
   serverPublicKey: '...',
-  serverAddress: 'your.server.com',
+  serverAddress: 'vpn.example.com',
   serverPort: 51820,
   allowedIPs: ['0.0.0.0/0'],
   dns: ['1.1.1.1'],
@@ -172,7 +176,7 @@ await disconnect();
 
 ### 📊 `getStatus()`
 
-Returns the current tunnel status.
+Returns the current VPN tunnel status.
 
 ```ts
 const status = await getStatus();
@@ -245,4 +249,4 @@ MIT © Abhinav Verma
 ## ⭐ Support
 
 If you find this package useful, please consider starring ⭐ [the repo on GitHub](https://github.com/Abhinav-1v/rn-wireguard-tunnel).  
-It helps more developers discover it!
+It helps more developers discover it and keeps development active.
