@@ -68,9 +68,10 @@ jobs:
       - name: Build example for Android
         env:
           JAVA_OPTS: '-XX:MaxHeapSize=6g'
+        working-directory: example/android
         run: |
-          chmod +x example/android/gradlew
-          ./example/android/gradlew assembleDebug
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
   # 🍎 Build iOS
   build-ios:
