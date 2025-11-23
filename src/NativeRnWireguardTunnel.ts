@@ -6,7 +6,7 @@ export type WireGuardConfig = {
   serverPublicKey: string;
   serverAddress: string;
   serverPort: number; // eg. 51820
-  allowedIPs: string[]; // default '0.0.0.0/0 (route everything)
+  allowedIPs: string[]; // default '0.0.0.0/0' (route everything)
   dns?: string[];
   mtu?: number;
   presharedKey?: string;

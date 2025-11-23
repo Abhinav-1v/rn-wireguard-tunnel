@@ -15,18 +15,15 @@
   "files": [
     "src",
     "lib",
-    "android",
+    "android/src",
+    "android/build.gradle",
     "ios",
-    "cpp",
-    "*.podspec",
-    "react-native.config.js",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "bob build",
-    "clean": "rimraf lib android/.gradle android/.cxx",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "npm run build",
     "release": "release-it"
   },
