@@ -30,3 +30,5 @@ export async function generateKeys(): Promise<{
 }> {
   return RnWireguardTunnel.generateKeys();
 }
+
+export type { WireGuardConfig, WireGuardStatus };
