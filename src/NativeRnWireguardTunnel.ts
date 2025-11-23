@@ -1,6 +1,6 @@
 import { TurboModuleRegistry, type TurboModule } from 'react-native';
 
-export interface WireGuardConfig {
+export type WireGuardConfig = {
   clientPrivateKey: string;
   clientAddress: string; // eg. 10.0.0.2/32
   serverPublicKey: string;
@@ -10,13 +10,13 @@ export interface WireGuardConfig {
   dns?: string[];
   mtu?: number;
   presharedKey?: string;
-}
+};
 
-export interface WireGuardStatus {
+export type WireGuardStatus = {
   isConnected: boolean;
   tunnelState: 'ACTIVE' | 'INACTIVE' | 'ERROR';
   error?: string;
-}
+};
 
 export interface Spec extends TurboModule {
   initialize(): Promise<void>;
